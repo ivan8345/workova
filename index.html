@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workova — Find Jobs in Europe</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0d0d;
+    --green: #1a7a4a;
+    --green-light: #22a060;
+    --lime: #d4f5e0;
+    --sand: #f5f2ec;
+    --orange: #e86c2a;
+    --white: #ffffff;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--orange); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--green); }
+
+  .lang-switcher {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .lang-btn {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #0a1f14 0%, #0d3320 50%, #1a7a4a 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -10%;
+    width: 60vw; height: 120vh;
+    background: radial-gradient(ellipse, rgba(232,108,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(232,108,42,0.2);
+    color: #ffaa70;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: #6dffaa;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: #c85520;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+  /* STATS */
+  .stats-bar {
+    background: var(--sand);
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 500px;
+    margin-bottom: 3rem;
+  }
+
+  /* CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .card:hover {
+    border-color: var(--green);
+    box-shadow: 0 4px 20px rgba(26,122,74,0.1);
+    transform: translateY(-2px);
+  }
+
+  .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .card-link {
+    font-size: 0.9rem;
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  /* COUNTRIES */
+  .countries-bg { background: var(--lime); }
+
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .country-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .country-card:hover {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+    transform: translateY(-2px);
+  }
+
+  .country-card:hover .country-jobs { color: rgba(255,255,255,0.8); }
+
+  .country-flag { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .country-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+  .country-jobs { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* STEPS */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .step { text-align: center; }
+
+  .step-num {
+    width: 3rem;
+    height: 3rem;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin: 0 auto 1rem;
+  }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-desc { font-size: 0.9rem; color: var(--muted); }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, #0a1f14, #1a7a4a);
+    color: white;
+    text-align: center;
+  }
+
+  .cta-section .section-title { color: white; }
+  .cta-section .section-desc { color: rgba(255,255,255,0.7); margin: 0 auto 2.5rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.6);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  footer .logo { color: white; display: inline-block; margin-bottom: 1rem; }
+  footer p { font-size: 0.85rem; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .stats-bar { gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Work<span>ova</span></a>
+  <ul class="nav-links">
+    <li><a href="#categories" data-i18n="nav-cat">Categories</a></li>
+    <li><a href="#countries" data-i18n="nav-countries">Countries</a></li>
+    <li><a href="#how" data-i18n="nav-how">How it works</a></li>
+  </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('ru')">RU</button>
+    <button class="lang-btn" onclick="setLang('uk')">UA</button>
+    <button class="lang-btn" onclick="setLang('de')">DE</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow" data-i18n="hero-eyebrow">Jobs across Europe</div>
+    <h1 data-i18n="hero-title">Find your job in <em>Europe</em> today</h1>
+    <p data-i18n="hero-desc">Thousands of job openings in Germany, Poland, Czech Republic and more. Apply directly — no agencies, no fees.</p>
+    <div class="hero-cta">
+      <a href="#categories" class="btn-primary" data-i18n="hero-btn1">Browse jobs</a>
+      <a href="#countries" class="btn-secondary" data-i18n="hero-btn2">Choose country</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-number">50K+</div>
+    <div class="stat-label" data-i18n="stat1">Active job listings</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">30+</div>
+    <div class="stat-label" data-i18n="stat2">European countries</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">200+</div>
+    <div class="stat-label" data-i18n="stat3">Job categories</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">€0</div>
+    <div class="stat-label" data-i18n="stat4">Registration fee</div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <div class="section-inner">
+    <div class="section-label" data-i18n="cat-label">What's available</div>
+    <h2 class="section-title" data-i18n="cat-title">Popular job categories</h2>
+    <p class="section-desc" data-i18n="cat-desc">From warehouse work to IT — find opportunities that match your skills and experience.</p>
+    <div class="cards-grid">
+      <a href="#" class="card">
+        <div class="card-icon">🏭</div>
+        <div class="card-title" data-i18n="card1-title">Factory & Warehouse</div>
+        <div class="card-desc" data-i18n="card1-desc">Production, packaging, forklift operators. High demand in Germany, Poland and Czech Republic.</div>
+        <div class="card-link" data-i18n="card-link">Find jobs →</div>
+      </a>
+      <a href="#" class="card">
+        <div class="card-icon">🚚</div>
+        <div class="card-title" data-i18n="card2-title">Driving & Delivery</div>
+        <div class="card-desc" data-i18n="card2-desc">Truck drivers, couriers, taxi and ride-hailing. EU driving license required for most positions.</div>
+        <div class="card-link" data-i18n="card2-link">Find jobs →</div>
+      </a>
+      <a href="#" class="card">
+        <div class="card-icon">🏗️</div>
+        <div class="card-title" data-i18n="card3-title">Construction</div>
+        <div class="card-desc" data-i18n="card3-desc">Builders, electricians, plumbers, painters. Shortage of skilled workers across all of Europe.</div>
+        <div class="card-link" data-i18n="card3-link">Find jobs →</div>
+      </a>
+      <a href="#" class="card">
+        <div class="card-icon">🍽️</div>
+        <div class="card-title" data-i18n="card4-title">Hospitality & Food</div>
+        <div class="card-desc" data-i18n="card4-desc">Waiters, cooks, hotel staff, cleaners. Year-round demand in tourist cities.</div>
+        <div class="card-link" data-i18n="card4-link">Find jobs →</div>
+      </a>
+      <a href="#" class="card">
+        <div class="card-icon">💻</div>
+        <div class="card-title" data-i18n="card5-title">IT & Remote</div>
+        <div class="card-desc" data-i18n="card5-desc">Developers, designers, support. Many positions are fully remote or hybrid.</div>
+        <div class="card-link" data-i18n="card5-link">Find jobs →</div>
+      </a>
+      <a href="#" class="card">
+        <div class="card-icon">🌾</div>
+        <div class="card-title" data-i18n="card6-title">Agriculture & Seasonal</div>
+        <div class="card-desc" data-i18n="card6-desc">Fruit picking, farm work, seasonal jobs. Accommodation often included.</div>
+        <div class="card-link" data-i18n="card6-link">Find jobs →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTRIES -->
+<section id="countries" class="countries-bg">
+  <div class="section-inner">
+    <div class="section-label" data-i18n="country-label">Where to work</div>
+    <h2 class="section-title" data-i18n="country-title">Jobs by country</h2>
+    <p class="section-desc" data-i18n="country-desc">Click a country to see available positions and average salaries.</p>
+    <div class="country-grid">
+      <a href="#" class="country-card">
+        <div class="country-flag">🇩🇪</div>
+        <div class="country-name">Germany</div>
+        <div class="country-jobs" data-i18n="jobs">12,400 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇵🇱</div>
+        <div class="country-name">Poland</div>
+        <div class="country-jobs">8,200 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇨🇿</div>
+        <div class="country-name">Czech Republic</div>
+        <div class="country-jobs">5,100 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇦🇹</div>
+        <div class="country-name">Austria</div>
+        <div class="country-jobs">3,800 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇳🇱</div>
+        <div class="country-name">Netherlands</div>
+        <div class="country-jobs">4,500 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇸🇰</div>
+        <div class="country-name">Slovakia</div>
+        <div class="country-jobs">2,100 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇳🇴</div>
+        <div class="country-name">Norway</div>
+        <div class="country-jobs">3,200 jobs</div>
+      </a>
+      <a href="#" class="country-card">
+        <div class="country-flag">🇬🇧</div>
+        <div class="country-name">UK</div>
+        <div class="country-jobs">9,700 jobs</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-label" data-i18n="how-label">Simple process</div>
+    <h2 class="section-title" data-i18n="how-title">How Workova works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title" data-i18n="step1-title">Choose your country</div>
+        <div class="step-desc" data-i18n="step1-desc">Select where you want to work. We show you real openings with salaries and requirements.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title" data-i18n="step2-title">Pick a category</div>
+        <div class="step-desc" data-i18n="step2-desc">Find jobs that match your skills. No experience needed for many positions.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title" data-i18n="step3-title">Apply directly</div>
+        <div class="step-desc" data-i18n="step3-desc">Click through to the employer and apply. No agencies, no middlemen, no fees.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title" data-i18n="step4-title">Start working</div>
+        <div class="step-desc" data-i18n="step4-desc">Get hired and start your new life in Europe. Many jobs include accommodation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-inner">
+    <h2 class="section-title" data-i18n="cta-title">Ready to work in Europe?</h2>
+    <p class="section-desc" data-i18n="cta-desc">Thousands of employers are hiring right now. Find your opportunity today.</p>
+    <a href="#categories" class="btn-primary" data-i18n="cta-btn">Browse all jobs</a>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="logo">Work<span>ova</span></a>
+  <p data-i18n="footer">© 2026 Workova. All rights reserved. We may earn a commission when you apply through our links.</p>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    'nav-cat': 'Categories',
+    'nav-countries': 'Countries',
+    'nav-how': 'How it works',
+    'hero-eyebrow': 'Jobs across Europe',
+    'hero-title': 'Find your job in <em>Europe</em> today',
+    'hero-desc': 'Thousands of job openings in Germany, Poland, Czech Republic and more. Apply directly — no agencies, no fees.',
+    'hero-btn1': 'Browse jobs',
+    'hero-btn2': 'Choose country',
+    'stat1': 'Active job listings',
+    'stat2': 'European countries',
+    'stat3': 'Job categories',
+    'stat4': 'Registration fee',
+    'cat-label': 'What\'s available',
+    'cat-title': 'Popular job categories',
+    'cat-desc': 'From warehouse work to IT — find opportunities that match your skills.',
+    'card1-title': 'Factory & Warehouse',
+    'card1-desc': 'Production, packaging, forklift operators. High demand in Germany, Poland and Czech Republic.',
+    'card-link': 'Find jobs →',
+    'card2-title': 'Driving & Delivery',
+    'card2-desc': 'Truck drivers, couriers, taxi and ride-hailing. EU driving license required.',
+    'card2-link': 'Find jobs →',
+    'card3-title': 'Construction',
+    'card3-desc': 'Builders, electricians, plumbers, painters. Shortage of skilled workers across Europe.',
+    'card3-link': 'Find jobs →',
+    'card4-title': 'Hospitality & Food',
+    'card4-desc': 'Waiters, cooks, hotel staff, cleaners. Year-round demand in tourist cities.',
+    'card4-link': 'Find jobs →',
+    'card5-title': 'IT & Remote',
+    'card5-desc': 'Developers, designers, support. Many positions are fully remote.',
+    'card5-link': 'Find jobs →',
+    'card6-title': 'Agriculture & Seasonal',
+    'card6-desc': 'Fruit picking, farm work, seasonal jobs. Accommodation often included.',
+    'card6-link': 'Find jobs →',
+    'country-label': 'Where to work',
+    'country-title': 'Jobs by country',
+    'country-desc': 'Click a country to see available positions and average salaries.',
+    'how-label': 'Simple process',
+    'how-title': 'How Workova works',
+    'step1-title': 'Choose your country',
+    'step1-desc': 'Select where you want to work. We show real openings with salaries.',
+    'step2-title': 'Pick a category',
+    'step2-desc': 'Find jobs that match your skills. No experience needed for many positions.',
+    'step3-title': 'Apply directly',
+    'step3-desc': 'Click through to the employer and apply. No fees.',
+    'step4-title': 'Start working',
+    'step4-desc': 'Get hired and start your new life in Europe.',
+    'cta-title': 'Ready to work in Europe?',
+    'cta-desc': 'Thousands of employers are hiring right now.',
+    'cta-btn': 'Browse all jobs',
+    'footer': '© 2026 Workova. All rights reserved. We may earn a commission when you apply through our links.'
+  },
+  ru: {
+    'nav-cat': 'Категории',
+    'nav-countries': 'Страны',
+    'nav-how': 'Как это работает',
+    'hero-eyebrow': 'Работа по всей Европе',
+    'hero-title': 'Найди работу в <em>Европе</em> сегодня',
+    'hero-desc': 'Тысячи вакансий в Германии, Польше, Чехии и других странах. Подавай напрямую — без агентств и комиссий.',
+    'hero-btn1': 'Смотреть вакансии',
+    'hero-btn2': 'Выбрать страну',
+    'stat1': 'Активных вакансий',
+    'stat2': 'Стран Европы',
+    'stat3': 'Категорий работ',
+    'stat4': 'Регистрация',
+    'cat-label': 'Что доступно',
+    'cat-title': 'Популярные категории',
+    'cat-desc': 'От работы на складе до IT — найди возможность под свои навыки.',
+    'card1-title': 'Завод и склад',
+    'card1-desc': 'Производство, упаковка, операторы погрузчиков. Высокий спрос в Германии и Польше.',
+    'card-link': 'Найти работу →',
+    'card2-title': 'Водители и курьеры',
+    'card2-desc': 'Дальнобойщики, курьеры, такси. Для большинства нужны права ЕС.',
+    'card2-link': 'Найти работу →',
+    'card3-title': 'Строительство',
+    'card3-desc': 'Строители, электрики, сантехники, маляры. Нехватка кадров по всей Европе.',
+    'card3-link': 'Найти работу →',
+    'card4-title': 'Гостиницы и еда',
+    'card4-desc': 'Официанты, повара, персонал отелей. Постоянный спрос в туристических городах.',
+    'card4-link': 'Найти работу →',
+    'card5-title': 'IT и удалённо',
+    'card5-desc': 'Разработчики, дизайнеры, поддержка. Много позиций полностью удалённых.',
+    'card5-link': 'Найти работу →',
+    'card6-title': 'Сельское хозяйство',
+    'card6-desc': 'Сбор урожая, сезонная работа. Часто с проживанием.',
+    'card6-link': 'Найти работу →',
+    'country-label': 'Где работать',
+    'country-title': 'Работа по странам',
+    'country-desc': 'Нажми на страну чтобы увидеть вакансии и зарплаты.',
+    'how-label': 'Просто',
+    'how-title': 'Как работает Workova',
+    'step1-title': 'Выбери страну',
+    'step1-desc': 'Укажи где хочешь работать. Мы покажем реальные вакансии с зарплатами.',
+    'step2-title': 'Выбери категорию',
+    'step2-desc': 'Найди работу под свои навыки. Для многих позиций опыт не нужен.',
+    'step3-title': 'Подай заявку',
+    'step3-desc': 'Переходи к работодателю и подавай напрямую. Без комиссий.',
+    'step4-title': 'Начни работать',
+    'step4-desc': 'Получи оффер и начни новую жизнь в Европе.',
+    'cta-title': 'Готов работать в Европе?',
+    'cta-desc': 'Тысячи работодателей нанимают прямо сейчас.',
+    'cta-btn': 'Смотреть все вакансии',
+    'footer': '© 2026 Workova. Все права защищены. Мы можем получать комиссию при трудоустройстве по нашим ссылкам.'
+  },
+  uk: {
+    'nav-cat': 'Категорії',
+    'nav-countries': 'Країни',
+    'nav-how': 'Як це працює',
+    'hero-eyebrow': 'Робота по всій Європі',
+    'hero-title': 'Знайди роботу в <em>Європі</em> сьогодні',
+    'hero-desc': 'Тисячі вакансій у Німеччині, Польщі, Чехії та інших країнах. Подавай напряму — без агентств.',
+    'hero-btn1': 'Дивитись вакансії',
+    'hero-btn2': 'Обрати країну',
+    'stat1': 'Активних вакансій',
+    'stat2': 'Країн Європи',
+    'stat3': 'Категорій робіт',
+    'stat4': 'Реєстрація',
+    'cat-label': 'Що доступно',
+    'cat-title': 'Популярні категорії',
+    'cat-desc': 'Від роботи на складі до IT — знайди можливість під свої навички.',
+    'card1-title': 'Завод та склад',
+    'card1-desc': 'Виробництво, пакування, оператори навантажувачів. Високий попит у Німеччині та Польщі.',
+    'card-link': 'Знайти роботу →',
+    'card2-title': 'Водії та кур\'єри',
+    'card2-desc': 'Далекобійники, кур\'єри, таксі. Для більшості потрібні права ЄС.',
+    'card2-link': 'Знайти роботу →',
+    'card3-title': 'Будівництво',
+    'card3-desc': 'Будівельники, електрики, сантехніки. Нестача кадрів по всій Європі.',
+    'card3-link': 'Знайти роботу →',
+    'card4-title': 'Готелі та їжа',
+    'card4-desc': 'Офіціанти, кухарі, персонал готелів. Постійний попит у туристичних містах.',
+    'card4-link': 'Знайти роботу →',
+    'card5-title': 'IT та віддалено',
+    'card5-desc': 'Розробники, дизайнери, підтримка. Багато позицій повністю віддалені.',
+    'card5-link': 'Знайти роботу →',
+    'card6-title': 'Сільське господарство',
+    'card6-desc': 'Збір врожаю, сезонна робота. Часто з проживанням.',
+    'card6-link': 'Знайти роботу →',
+    'country-label': 'Де працювати',
+    'country-title': 'Робота по країнах',
+    'country-desc': 'Натисни на країну щоб побачити вакансії та зарплати.',
+    'how-label': 'Просто',
+    'how-title': 'Як працює Workova',
+    'step1-title': 'Обери країну',
+    'step1-desc': 'Вкажи де хочеш працювати. Ми покажемо реальні вакансії з зарплатами.',
+    'step2-title': 'Обери категорію',
+    'step2-desc': 'Знайди роботу під свої навички.',
+    'step3-title': 'Подай заявку',
+    'step3-desc': 'Переходь до роботодавця та подавай напряму.',
+    'step4-title': 'Починай працювати',
+    'step4-desc': 'Отримай оффер і почни нове життя в Європі.',
+    'cta-title': 'Готовий працювати в Європі?',
+    'cta-desc': 'Тисячі роботодавців наймають прямо зараз.',
+    'cta-btn': 'Дивитись всі вакансії',
+    'footer': '© 2026 Workova. Всі права захищені.'
+  },
+  de: {
+    'nav-cat': 'Kategorien',
+    'nav-countries': 'Länder',
+    'nav-how': 'Wie es funktioniert',
+    'hero-eyebrow': 'Jobs in ganz Europa',
+    'hero-title': 'Finde deinen Job in <em>Europa</em> heute',
+    'hero-desc': 'Tausende Stellenangebote in Deutschland, Polen, Tschechien und mehr. Direkt bewerben — keine Agenturen.',
+    'hero-btn1': 'Jobs durchsuchen',
+    'hero-btn2': 'Land wählen',
+    'stat1': 'Aktive Stellenangebote',
+    'stat2': 'Europäische Länder',
+    'stat3': 'Jobkategorien',
+    'stat4': 'Registrierungsgebühr',
+    'cat-label': 'Was verfügbar ist',
+    'cat-title': 'Beliebte Jobkategorien',
+    'cat-desc': 'Von Lagerarbeit bis IT — finde Möglichkeiten die zu deinen Fähigkeiten passen.',
+    'card1-title': 'Fabrik & Lager',
+    'card1-desc': 'Produktion, Verpackung, Gabelstaplerfahrer. Hohe Nachfrage in Deutschland und Polen.',
+    'card-link': 'Jobs finden →',
+    'card2-title': 'Fahrer & Lieferung',
+    'card2-desc': 'LKW-Fahrer, Kuriere, Taxi. EU-Führerschein für die meisten Stellen erforderlich.',
+    'card2-link': 'Jobs finden →',
+    'card3-title': 'Bauwesen',
+    'card3-desc': 'Bauarbeiter, Elektriker, Klempner, Maler. Fachkräftemangel in ganz Europa.',
+    'card3-link': 'Jobs finden →',
+    'card4-title': 'Gastronomie',
+    'card4-desc': 'Kellner, Köche, Hotelpersonal. Ganzjährige Nachfrage in Touristenstädten.',
+    'card4-link': 'Jobs finden →',
+    'card5-title': 'IT & Remote',
+    'card5-desc': 'Entwickler, Designer, Support. Viele Positionen vollständig remote.',
+    'card5-link': 'Jobs finden →',
+    'card6-title': 'Landwirtschaft',
+    'card6-desc': 'Ernte, Saisonarbeit. Unterkunft oft inklusive.',
+    'card6-link': 'Jobs finden →',
+    'country-label': 'Wo arbeiten',
+    'country-title': 'Jobs nach Land',
+    'country-desc': 'Land anklicken um Stellen und Gehälter zu sehen.',
+    'how-label': 'Einfacher Prozess',
+    'how-title': 'Wie Workova funktioniert',
+    'step1-title': 'Land wählen',
+    'step1-desc': 'Wo möchtest du arbeiten? Wir zeigen echte Stellen mit Gehältern.',
+    'step2-title': 'Kategorie wählen',
+    'step2-desc': 'Jobs die zu deinen Fähigkeiten passen finden.',
+    'step3-title': 'Direkt bewerben',
+    'step3-desc': 'Zum Arbeitgeber wechseln und bewerben. Keine Gebühren.',
+    'step4-title': 'Anfangen zu arbeiten',
+    'step4-desc': 'Angebot erhalten und neues Leben in Europa beginnen.',
+    'cta-title': 'Bereit in Europa zu arbeiten?',
+    'cta-desc': 'Tausende Arbeitgeber stellen gerade ein.',
+    'cta-btn': 'Alle Jobs durchsuchen',
+    'footer': '© 2026 Workova. Alle Rechte vorbehalten.'
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.innerHTML = t[key];
+  });
+}
+</script>
+</body>
+</html>
